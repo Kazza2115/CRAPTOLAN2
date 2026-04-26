@@ -10,40 +10,41 @@ const TICK_HZ   = 30;             // UI refresh rate
 const COST_RAMP = 1.15;           // each purchase increases the cost
 
 // --- Generator catalog -----------------------------------------
+// Cyber-café idle: each unit = a player parked at a PC who farms POINTS.
 // Add entries here to extend the game. The UI builds itself from this list.
 export const GENERATORS = [
   {
-    id: 'kiddie',
-    name: 'Script Kiddie',
-    desc: 'Génère des bytes sans rien comprendre au code.',
-    icon: '🧑‍💻',
+    id: 'casu',
+    name: 'Casu',
+    desc: 'Joue à Minecraft entre deux barres chocolatées.',
+    icon: '🎮',
     baseCost: 10,
-    baseRate: 1,            // bytes per second
+    baseRate: 1,
     unlockBytes: 0,
   },
   {
-    id: 'dev',
-    name: 'Dev Junior',
-    desc: 'Sait deboguer le wifi du garage.',
-    icon: '👨‍🔧',
+    id: 'tryhard',
+    name: 'Tryhard',
+    desc: 'Clavier RGB, casque vissé, no life confirmé.',
+    icon: '⌨️',
     baseCost: 100,
     baseRate: 8,
     unlockBytes: 50,
   },
   {
-    id: 'pentester',
-    name: 'Pentester',
-    desc: 'Renifle les paquets entre deux cafés.',
-    icon: '🕵️',
+    id: 'streamer',
+    name: 'Streamer',
+    desc: 'Ramène des viewers et des donations.',
+    icon: '📹',
     baseCost: 1100,
     baseRate: 60,
     unlockBytes: 600,
   },
   {
-    id: 'rig',
-    name: 'Rig de minage',
-    desc: 'Bruyant. Chaud. Rentable.',
-    icon: '⛏️',
+    id: 'pro',
+    name: 'Pro Player',
+    desc: 'Stack des MMR et des cashprizes.',
+    icon: '🏆',
     baseCost: 12000,
     baseRate: 500,
     unlockBytes: 6000,

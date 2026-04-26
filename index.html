@@ -12,6 +12,7 @@
 <body>
   <div id="app">
     <div id="stage"></div>
+    <div id="vignette"></div>
 
     <!-- HUD top bar -->
     <header id="hud">
@@ -23,7 +24,7 @@
         <div class="resource bytes">
           <span class="res-icon">⬢</span>
           <div class="res-text">
-            <span class="res-label">BYTES</span>
+            <span class="res-label">POINTS</span>
             <span class="res-value" data-bind="bytes">0</span>
           </div>
         </div>
@@ -31,7 +32,7 @@
           <span class="res-icon">↯</span>
           <div class="res-text">
             <span class="res-label">DÉBIT</span>
-            <span><span class="res-value" data-bind="rate">0</span><span class="res-suffix"> B/s</span></span>
+            <span><span class="res-value" data-bind="rate">0</span><span class="res-suffix"> /s</span></span>
           </div>
         </div>
       </div>
@@ -44,18 +45,18 @@
     <!-- Click feedback layer -->
     <div id="fx-layer"></div>
 
-    <!-- Shop / Recruitment panel -->
+    <!-- Shop / Recruitment panel — horizontal strip at the bottom -->
     <aside id="shop" class="panel">
       <header class="panel-head">
         <h2>RECRUTEMENT</h2>
-        <span class="panel-sub">Embauche ta première équipe</span>
+        <span class="panel-sub">Mets des joueurs derrière les écrans</span>
       </header>
       <div class="panel-body" id="shop-list"></div>
     </aside>
 
     <!-- Hint to click -->
     <div id="click-hint">
-      <span>Clique dans le garage pour miner des Bytes</span>
+      <span>Clique dans le garage pour booster les joueurs</span>
     </div>
   </div>
 

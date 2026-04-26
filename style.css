@@ -185,30 +185,33 @@ html, body {
   z-index: 11;
 }
 
+/* Bottom horizontal shop strip (LoL-style HUD bottom bar) */
 #shop {
+  left: 18px;
   right: 18px;
-  top: 90px;
-  bottom: 18px;
-  width: 320px;
+  bottom: 14px;
+  height: 178px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  padding: 0;
 }
 
 .panel-head {
-  padding: 14px 16px 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 10px 18px 8px;
   border-bottom: 1px solid rgba(255,255,255,0.05);
   font-family: "Orbitron", sans-serif;
 }
 .panel-head h2 {
   margin: 0;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 3px;
   color: var(--text);
 }
 .panel-sub {
-  display: block;
-  margin-top: 4px;
   font-size: 10px;
   letter-spacing: 1.5px;
   color: var(--text-dim);
@@ -217,17 +220,20 @@ html, body {
 
 .panel-body {
   flex: 1;
-  overflow-y: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
   padding: 12px;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row;
+  gap: 12px;
+  scrollbar-width: thin;
 }
-.panel-body::-webkit-scrollbar { width: 6px; }
+.panel-body::-webkit-scrollbar { height: 6px; }
 .panel-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
 
 .upgrade {
   position: relative;
+  flex: 0 0 240px;
   display: flex;
   gap: 12px;
   padding: 12px;
@@ -319,7 +325,7 @@ html, body {
 
 #click-hint {
   position: absolute;
-  bottom: 22px;
+  bottom: 210px;
   left: 50%;
   transform: translateX(-50%);
   padding: 8px 16px;
@@ -333,6 +339,20 @@ html, body {
   pointer-events: none;
   animation: floaty 2.4s ease-in-out infinite;
   transition: opacity 0.4s ease;
+}
+
+/* Vignette — emphasises the spotlit-room look from the reference */
+#vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 7;
+  background:
+    radial-gradient(ellipse at 50% 48%,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,0) 35%,
+      rgba(0,0,0,0.55) 75%,
+      rgba(0,0,0,0.92) 100%);
 }
 #click-hint.hidden { opacity: 0; }
 @keyframes floaty {
@@ -374,8 +394,9 @@ html, body {
 .res-value.bump { animation: bump 0.25s ease; }
 
 @media (max-width: 720px) {
-  #shop { width: calc(100% - 36px); top: auto; bottom: 18px; height: 38vh; }
-  #click-hint { bottom: calc(38vh + 30px); }
+  #shop { left: 8px; right: 8px; bottom: 8px; height: 168px; }
+  .upgrade { flex-basis: 200px; padding: 10px; }
+  #click-hint { bottom: 195px; font-size: 11px; }
   .resources .resource { min-width: 0; padding: 6px 10px; }
   .res-value { font-size: 14px; }
   .status { display: none; }

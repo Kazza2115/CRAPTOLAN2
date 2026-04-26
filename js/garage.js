@@ -37,9 +37,10 @@ export class Garage {
     this.app = app;
 
     // Tile geometry — in scene-local pixels, origin = floor center
+    // 2:1 isometric (League-of-Legends-ish 3/4 view, matches reference)
     this.fW = 1100;       // floor width (diamond's horizontal diameter)
     this.fH = 560;        // floor height (diamond's vertical diameter)
-    this.WH = 420;        // wall height
+    this.WH = 360;        // wall height (slightly shorter, matches photo)
 
     this.world = new PI.Container();
     this.world.sortableChildren = true;
@@ -432,26 +433,29 @@ export class Garage {
     const h = window.innerHeight;
     this.app.renderer.resize(w, h);
 
-    // keep room comfortably inside, leaving room for HUD top + shop right
-    const padTop = 100;
-    const padRight = 360;     // shop width + margin
-    const padLeft = 30;
-    const padBot = 80;
+    // HUD top + bottom shop reserve; the room sits in the middle of the void
+    const padTop = 80;
+    const padBot = 200;        // bottom shop strip
+    const availH = Math.max(280, h - padTop - padBot);
+    const availW = w;
 
-    const availW = Math.max(400, w - padLeft - padRight);
-    const availH = Math.max(300, h - padTop - padBot);
-
-    // bounding box of the room (in scene coords)
+    // The room only fills part of the available space → leaves dark void
+    // around it like the reference photo (LoL-style framing).
     const roomW = this.fW;
-    const roomH = this.fH / 2 + this.WH;     // visible vertical extent
-    const scale = Math.min(availW / roomW, availH / roomH) * 0.95;
+    const roomH = this.fH / 2 + this.WH;       // visible vertical extent
+    const FRAME_FRACTION = 0.62;               // 62% of available area
+    const scale = Math.min(
+      (availW * FRAME_FRACTION) / roomW,
+      (availH * FRAME_FRACTION) / roomH,
+    );
 
     this.world.scale.set(scale);
-    // center horizontally in the available area, vertically a bit lower
-    const cx = padLeft + availW / 2;
-    const cy = padTop + availH / 2 + (this.WH * scale) / 4;
-    this.world.x = cx;
-    this.world.y = cy;
+
+    // Geometric center of the room in scene coords is at y = -WH/2.
+    // Place that center at the visual center of the available band.
+    const targetCY = padTop + availH / 2;
+    this.world.x = w / 2;
+    this.world.y = targetCY + (this.WH / 2) * scale;
   }
 
   destroy() {

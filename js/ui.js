@@ -58,13 +58,13 @@ export class Shop {
           <h3>${g.name}</h3>
           <div class="desc">${g.desc}</div>
           <div class="stats">
-            <span class="prod">+${fmt(g.baseRate)} B/s</span>
+            <span class="prod">+${fmt(g.baseRate)} /s</span>
             <span class="qty">×<span data-count="${g.id}">0</span></span>
           </div>
         </div>
         <button class="buy-btn" data-buy="${g.id}" disabled>
           <span class="price" data-price="${g.id}">${fmt(g.baseCost)}</span>
-          <span class="price-suffix">BYTES</span>
+          <span class="price-suffix">POINTS</span>
         </button>
       `;
       this.list.appendChild(row);
