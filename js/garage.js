@@ -31,25 +31,27 @@ const shade = (hex, k) => {
   );
 };
 
-// ===== PALETTE — warm cozy cartoon ============================
+// ===== PALETTE — cool gray garage, chunky cartoon =============
 const C = {
-  // walls (warm stone, painted look)
-  wallBase:   0x9a8472,
-  wallLight:  0xc1aa92,
-  wallDark:   0x6f5946,
-  mortar:     0x46332a,
-  // floor (warm beige concrete)
-  floorBase:  0xc4a886,
-  floorLight: 0xd9bf9d,
-  floorDark:  0x8b7256,
-  floorStain: 0x6e5840,
+  // walls (cool gray-blue concrete bricks)
+  wallBase:   0x5a626e,   // mid brick face
+  wallLight:  0x808896,   // lit top edge
+  wallDark:   0x3a3f48,   // shadow bottom edge
+  wallEdgeL:  0x707783,   // subtle left highlight
+  wallEdgeR:  0x363b43,   // subtle right shadow
+  mortar:     0x14161a,   // deep recess between bricks
+  // floor (cool gray concrete)
+  floorBase:  0x6e727a,
+  floorLight: 0x8b8f97,
+  floorDark:  0x4a4d54,
+  floorStain: 0x35373d,
   // outline (cartoon black)
-  outline:    0x1c0e07,
-  // light
+  outline:    0x0a0b0e,
+  // light (warm — only warm element to give cozy contrast)
   tubeCore:   0xfff1c2,
   tubeGlow:   0xffc875,
   // ambient
-  ambient:    0x2a1820,
+  ambient:    0x141821,
 };
 
 // ===== Garage class ============================================
@@ -112,12 +114,12 @@ export class Garage {
     this.drawLight('right');
   }
 
-  // ---------- soft warm halo behind the room ------------------
+  // ---------- soft cool halo behind the room ------------------
   drawAmbientGlow() {
     const g = new PI.Graphics();
     const r = Math.max(this.fW, this.fH) * 1.05;
     g.circle(0, -this.fH * 0.15, r);
-    g.fill({ color: C.ambient, alpha: 0.8 });
+    g.fill({ color: C.ambient, alpha: 0.85 });
     g.filters = [new PI.BlurFilter({ strength: 32, quality: 4 })];
     this.bgGlow.addChild(g);
   }
@@ -138,15 +140,26 @@ export class Garage {
     panel.fill({ color: C.mortar });
     block.addChild(panel);
 
-    // 2. bricks — chunkier, fewer, more graphic
+    // 2. bricks — chunky 3D relief (each brick is a small protruding volume)
     const bricksG = new PI.Graphics();
-    const blockH  = 56;          // brick height (px in v)
-    const blockU  = 0.20;        // brick width (in u-units along wall)
-    const mortarV = 4;
-    const mortarU = 0.012;
+    const blockH  = 52;          // brick height (px in v)
+    const blockU  = 0.165;       // brick width (in u-units along wall)
+    const mortarV = 3;           // recessed mortar gap (vertical)
+    const mortarU = 0.008;       // recessed mortar gap (horizontal)
+    const bevelV  = 4;           // top/bottom bevel band thickness (px)
+    const bevelU  = 0.005;       // left/right bevel band thickness (u)
 
     const rows = Math.ceil(this.WH / blockH) + 1;
     const rand = rng(isLeft ? 17 : 91);
+
+    const drawQuad = (uA, uB, v0, v1, color, alpha) => {
+      const p1 = project(uA, v1);
+      const p2 = project(uB, v1);
+      const p3 = project(uB, v0);
+      const p4 = project(uA, v0);
+      bricksG.poly([p1[0], p1[1], p2[0], p2[1], p3[0], p3[1], p4[0], p4[1]]);
+      bricksG.fill(alpha != null ? { color, alpha } : { color });
+    };
 
     for (let r = 0; r < rows; r++) {
       const v0 = r * blockH;
@@ -159,39 +172,37 @@ export class Garage {
         const uB = Math.min(1, u0 + blockU - mortarU);
         if (uB <= uA) continue;
 
-        const p1 = project(uA, v1);    // top-left
-        const p2 = project(uB, v1);    // top-right
-        const p3 = project(uB, v0);    // bottom-right
-        const p4 = project(uA, v0);    // bottom-left
-
-        // base color, gentle per-brick variation (warm)
-        const tone = lerp(0.94, 1.06, rand());
+        // -- brick base face (slight per-brick tone variation) --
+        const tone = lerp(0.93, 1.07, rand());
         const col  = shade(C.wallBase, tone);
-        bricksG.poly([p1[0], p1[1], p2[0], p2[1], p3[0], p3[1], p4[0], p4[1]]);
-        bricksG.fill({ color: col });
+        drawQuad(uA, uB, v0, v1, col);
 
-        // top highlight strip (lit by overhead lights)
-        const hiV0 = v1 - 5;
-        const hp1 = project(uA, v1);
-        const hp2 = project(uB, v1);
-        const hp3 = project(uB, hiV0);
-        const hp4 = project(uA, hiV0);
-        bricksG.poly([hp1[0], hp1[1], hp2[0], hp2[1], hp3[0], hp3[1], hp4[0], hp4[1]]);
-        bricksG.fill({ color: C.wallLight, alpha: 0.55 });
+        // -- top highlight band (light hits top edge) --
+        const hiV0 = Math.max(v0, v1 - bevelV);
+        drawQuad(uA, uB, hiV0, v1, C.wallLight);
 
-        // bottom shadow strip
-        const loV1 = v0 + 4;
-        const sp1 = project(uA, loV1);
-        const sp2 = project(uB, loV1);
-        const sp3 = project(uB, v0);
-        const sp4 = project(uA, v0);
-        bricksG.poly([sp1[0], sp1[1], sp2[0], sp2[1], sp3[0], sp3[1], sp4[0], sp4[1]]);
-        bricksG.fill({ color: C.wallDark, alpha: 0.55 });
+        // -- bottom shadow band (deep shadow under each brick) --
+        const loV1 = Math.min(v1, v0 + bevelV);
+        drawQuad(uA, uB, v0, loV1, C.wallDark);
+
+        // -- left edge subtle highlight (light coming from camera-front-left) --
+        const uLA = uA;
+        const uLB = Math.min(uB, uA + bevelU);
+        if (uLB > uLA) drawQuad(uLA, uLB, v0 + bevelV * 0.4, v1 - bevelV * 0.4, C.wallEdgeL, 0.7);
+
+        // -- right edge subtle shadow --
+        const uRA = Math.max(uA, uB - bevelU);
+        const uRB = uB;
+        if (uRB > uRA) drawQuad(uRA, uRB, v0 + bevelV * 0.4, v1 - bevelV * 0.4, C.wallEdgeR, 0.85);
+
+        // -- tiny top-left highlight pixel for the bevel intersection --
+        const cornerHi = drawQuad;
+        cornerHi(uA, Math.min(uB, uA + bevelU), v1 - bevelV, v1, 0xa6aebb, 0.85);
       }
     }
     block.addChild(bricksG);
 
-    // 3. ambient corner shadow (back corner is darker — receding)
+    // 3. ambient corner shadow (back corner is darker — receding into shadow)
     const shadowG = new PI.Graphics();
     const sa = project(0.55, 0);
     const sb = project(1.0, 0);
@@ -200,7 +211,7 @@ export class Garage {
     shadowG.poly([sa[0], sa[1], sb[0], sb[1], sc[0], sc[1], sd[0], sd[1]]);
     const grad = new PI.FillGradient(sa[0], 0, sb[0], 0);
     grad.addColorStop(0, 'rgba(0,0,0,0)');
-    grad.addColorStop(1, 'rgba(20,8,4,0.55)');
+    grad.addColorStop(1, 'rgba(0,4,10,0.55)');
     shadowG.fill(grad);
     block.addChild(shadowG);
 
@@ -265,9 +276,9 @@ export class Garage {
 
     // gentle vertical light gradient — back darker, front darker (lit middle)
     const grad = new PI.FillGradient(0, -half.y, 0, half.y);
-    grad.addColorStop(0,    'rgba(36,18,10,0.45)');
-    grad.addColorStop(0.55, 'rgba(36,18,10,0.05)');
-    grad.addColorStop(1,    'rgba(36,18,10,0.30)');
+    grad.addColorStop(0,    'rgba(8,12,20,0.50)');
+    grad.addColorStop(0.55, 'rgba(8,12,20,0.05)');
+    grad.addColorStop(1,    'rgba(8,12,20,0.30)');
     const shade1 = new PI.Graphics();
     shade1.poly([top[0], top[1], right[0], right[1], bottom[0], bottom[1], left[0], left[1]]);
     shade1.fill(grad);

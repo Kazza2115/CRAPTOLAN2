@@ -4,20 +4,20 @@
    ========================================================================== */
 
 :root {
-  /* Warm dark backdrop (cozy night, plum-brown) */
-  --bg:        #1a1018;
-  --bg-2:      #0c0608;
+  /* Cool dark backdrop (slate night) */
+  --bg:        #14171f;
+  --bg-2:      #08090d;
 
-  /* Wood + gold UI accents */
-  --panel:        rgba(38, 24, 20, 0.86);
-  --panel-edge:   #6a4830;
-  --panel-edge-2: #3a241a;
+  /* Slate panel + gold accents */
+  --panel:        rgba(28, 32, 42, 0.88);
+  --panel-edge:   #4a5260;
+  --panel-edge-2: #20242e;
   --panel-inset:  rgba(255, 220, 170, 0.05);
 
   /* Text */
-  --text:     #fff4d8;
-  --text-dim: #c8a98a;
-  --text-mut: #8a6f56;
+  --text:     #f3ecd8;
+  --text-dim: #a8b0bf;
+  --text-mut: #6f7886;
 
   /* Brand / state colors */
   --gold:     #f5c067;
@@ -54,7 +54,7 @@ html, body {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse at 50% 52%, #2a1a22 0%, #150a10 55%, #050204 100%);
+    radial-gradient(ellipse at 50% 52%, #1d2230 0%, #0e1018 55%, #04050a 100%);
 }
 
 #stage {
@@ -77,7 +77,7 @@ html, body {
     radial-gradient(ellipse at 50% 48%,
       rgba(0,0,0,0) 0%,
       rgba(0,0,0,0) 38%,
-      rgba(10,4,4,0.55) 78%,
+      rgba(2,4,8,0.55) 78%,
       rgba(0,0,0,0.95) 100%);
 }
 
@@ -125,7 +125,7 @@ html, body {
   pointer-events: auto;
 }
 
-/* Wood-plate style resource pills */
+/* Slate-plate style resource pills */
 .resource {
   position: relative;
   display: flex;
@@ -133,13 +133,13 @@ html, body {
   gap: 10px;
   padding: 9px 18px 9px 14px;
   background:
-    linear-gradient(180deg, #4a2e22 0%, #3a221a 100%);
+    linear-gradient(180deg, #2c323e 0%, #1d2129 100%);
   border: 2px solid var(--panel-edge);
   border-radius: 999px;
   box-shadow:
-    inset 0 1px 0 rgba(255,210,160,0.12),
-    inset 0 -3px 0 rgba(0,0,0,0.35),
-    0 6px 14px rgba(0,0,0,0.45);
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -3px 0 rgba(0,0,0,0.45),
+    0 6px 14px rgba(0,0,0,0.5);
   min-width: 160px;
 }
 .resource::before {
@@ -221,13 +221,13 @@ html, body {
 
 .panel {
   position: absolute;
-  background: linear-gradient(180deg, #2e1c16 0%, #1c100c 100%);
+  background: linear-gradient(180deg, #232834 0%, #131620 100%);
   border: 3px solid var(--panel-edge);
   border-radius: var(--radius);
   box-shadow:
-    inset 0 1px 0 rgba(255,210,160,0.10),
-    inset 0 -4px 0 rgba(0,0,0,0.5),
-    0 12px 28px rgba(0,0,0,0.55);
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -4px 0 rgba(0,0,0,0.55),
+    0 12px 28px rgba(0,0,0,0.6);
   z-index: 11;
 }
 
@@ -287,12 +287,12 @@ html, body {
   display: flex;
   gap: 12px;
   padding: 12px;
-  background: linear-gradient(180deg, #3a241a 0%, #261610 100%);
+  background: linear-gradient(180deg, #2c313d 0%, #181b24 100%);
   border: 2px solid var(--panel-edge);
   border-radius: 14px;
   box-shadow:
-    inset 0 1px 0 rgba(255,210,160,0.08),
-    inset 0 -3px 0 rgba(0,0,0,0.45);
+    inset 0 1px 0 rgba(255,255,255,0.07),
+    inset 0 -3px 0 rgba(0,0,0,0.5);
   transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .upgrade:hover {
@@ -313,14 +313,14 @@ html, body {
   height: 56px;
   border-radius: 14px;
   background:
-    radial-gradient(circle at 30% 25%, rgba(255,220,170,0.18), transparent 60%),
-    linear-gradient(180deg, #4d3122 0%, #1f110a 100%);
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,0.18), transparent 60%),
+    linear-gradient(180deg, #353c4a 0%, #14171f 100%);
   border: 2px solid var(--panel-edge);
   display: grid;
   place-items: center;
   font-size: 30px;
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
-  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.45);
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.5);
 }
 
 .upgrade-info {
@@ -420,7 +420,7 @@ html, body {
   transform: translateX(-50%);
   padding: 9px 18px;
   border-radius: 999px;
-  background: rgba(20, 10, 8, 0.7);
+  background: rgba(15, 18, 25, 0.75);
   border: 2px solid var(--panel-edge);
   color: var(--text-dim);
   font-family: "Fredoka", sans-serif;
@@ -431,7 +431,7 @@ html, body {
   pointer-events: none;
   animation: floaty 2.4s ease-in-out infinite;
   transition: opacity 0.4s ease;
-  box-shadow: inset 0 1px 0 rgba(255,210,160,0.08), 0 6px 14px rgba(0,0,0,0.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 6px 14px rgba(0,0,0,0.5);
 }
 #click-hint.hidden { opacity: 0; }
 @keyframes floaty {
