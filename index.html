@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRAPTOLAN2 — Le Garage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <div id="stage"></div>
+
+    <!-- HUD top bar -->
+    <header id="hud">
+      <div class="brand">
+        <span class="brand-prefix">&gt;_</span>
+        <span class="brand-name">CRAPTOLAN<span class="brand-v">.2</span></span>
+      </div>
+      <div class="resources">
+        <div class="resource bytes">
+          <span class="res-icon">⬢</span>
+          <div class="res-text">
+            <span class="res-label">BYTES</span>
+            <span class="res-value" data-bind="bytes">0</span>
+          </div>
+        </div>
+        <div class="resource rate">
+          <span class="res-icon">↯</span>
+          <div class="res-text">
+            <span class="res-label">DÉBIT</span>
+            <span><span class="res-value" data-bind="rate">0</span><span class="res-suffix"> B/s</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="status">
+        <span class="status-dot"></span>
+        <span class="status-text">GARAGE — NIV.1</span>
+      </div>
+    </header>
+
+    <!-- Click feedback layer -->
+    <div id="fx-layer"></div>
+
+    <!-- Shop / Recruitment panel -->
+    <aside id="shop" class="panel">
+      <header class="panel-head">
+        <h2>RECRUTEMENT</h2>
+        <span class="panel-sub">Embauche ta première équipe</span>
+      </header>
+      <div class="panel-body" id="shop-list"></div>
+    </aside>
+
+    <!-- Hint to click -->
+    <div id="click-hint">
+      <span>Clique dans le garage pour miner des Bytes</span>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.6.5/dist/pixi.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
